@@ -1,25 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+import "./App.css";
+import "./index.css";
+import LoginPage from "./StartPages/LoginPage.js";
+import SignUp from "./StartPages/SignUp.jsx";
+import Interviewsystem from "./StartPages/InterviewSystem.jsx";
+import WelcomePage from "./StartPages/WelcomePage.jsx";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Login Page */}
+        <Route
+          path="/"
+          element={<LoginPage onLogin={() => setIsLoggedIn(true)} />}
+        />
+
+        {/* Sign Up Page */}
+        <Route path="/signup" element={<SignUp />} />
+
+        {/* Welcome Page */}
+        <Route
+          path="/main"
+          element={
+            //isLoggedIn ? <WelcomePage /> : <Navigate to="/" />
+            <LoginPage onLogin={() => setIsLoggedIn(true)} />
+          }
+        />
+
+        {/* Interview System */}
+        <Route
+          path="/interviewsystem"
+          element={isLoggedIn ? <Interviewsystem /> : <Navigate to="/" />}
+        />
+
+        {/* Welcome Page */}
+<Route
+  path="/welcome"
+  element={
+    //isLoggedIn ? <WelcomePage /> : <Navigate to="/" />
+    <LoginPage onLogin={() => setIsLoggedIn(true)} />
+    }
+/>
+
+      </Routes>
+    </Router>
   );
 }
 

@@ -1,60 +1,51 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import image1 from "./background.jpg";
-import LoginController from "./LoginController";
+import { useNavigate, Link } from "react-router-dom";
+import { loginUser } from "./api"; // Create api.ts or similar
 
-// Component for the login page
-function LoginPage({ onLogin }) {
-  const [email, setEmail] = useState(""); // State to store email input
-  const [password, setPassword] = useState(""); // State to store password input
-  const navigate = useNavigate(); // Navigation function to redirect users
+interface LoginPageProps {
+  onLogin: () => void;
+}
 
-  // Handles the login form submission
-  const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+function LoginPage({ onLogin }: LoginPageProps) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
-    // Validate form data before attempting login
-    const validation = LoginController.validateLoginData(email, password);
-    if (!validation.isValid) {
-      alert(validation.message); // Show an alert if validation fails
-      return;
-    }
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null); // Clear previous errors
 
-    // Attempt to log in using the provided credentials
-    const result = await LoginController.loginWithEmailAndPassword(email, password);
-    if (result.success) {
-      onLogin(); // Trigger the parent component's login callback
-      navigate("/interviewsystem"); // Redirect to the main application page
-    } else {
-      alert(result.message); // Show an error message if login fails
+    try {
+      const response = await loginUser(email, password);
+
+      if (response.success) {
+        localStorage.setItem("token", response.token); // Store JWT token
+        onLogin();
+        navigate("/dashboard"); // Redirect to dashboard
+      } else {
+        setError(response.message || "Login failed"); // Display error message
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || "An unexpected error occurred");
+      } else {
+        setError("An unexpected error occurred");
+      }
     }
   };
 
   return (
     <div className="relative min-h-screen bg-gray-100">
-      {/* Background Image */}
-      <div className="absolute w-full h-full">
-        <img
-          src={image1}
-          alt="Background"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Overlay for dimming the background */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-      {/* Login Form Container */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-          {/* Page Title */}
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
             Login
           </h2>
-          {/* Login Form */}
+          {error && <p className="text-red-500 mb-4">{error}</p>}
           <form onSubmit={handleLogin}>
-            {/* Email Input */}
             <div className="mb-3">
               <label
                 htmlFor="email"
@@ -70,10 +61,10 @@ function LoginPage({ onLogin }) {
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-0.5 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your email"
+                required
               />
             </div>
 
-            {/* Password Input */}
             <div className="mb-3">
               <label
                 htmlFor="password"
@@ -89,10 +80,10 @@ function LoginPage({ onLogin }) {
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-0.5 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your password"
+                required
               />
             </div>
 
-            {/* Login Button */}
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -100,7 +91,6 @@ function LoginPage({ onLogin }) {
               Login
             </button>
           </form>
-          {/* Sign Up Link */}
           <p className="text-center text-sm mt-4">
             Don't have an account?{" "}
             <Link

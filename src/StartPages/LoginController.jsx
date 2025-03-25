@@ -1,5 +1,5 @@
-import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+//import { auth } from "../firebase";
+//import { signInWithEmailAndPassword } from "firebase/auth";
 
 class LoginController {
     // Attempt to log in user with email and password
