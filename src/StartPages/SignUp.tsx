@@ -4,23 +4,24 @@ import { signUpUser } from "./SignUpController"; // Assuming this handles API ca
 
 // Component for signing up a new user
 function SignUp() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(""); // State for storing username input
+  const [email, setEmail] = useState(""); // State for storing email input
+  const [password, setPassword] = useState(""); // State for storing password input
   const [error, setError] = useState<string | null>(null); // State for error messages
   const navigate = useNavigate();
 
+  // Function to handle form submission
   const signUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
     setError(null); // Clear previous errors
 
     try {
       await signUpUser(username, email, password); // Assuming this returns void or handles errors internally
       alert("User signed up successfully! You can now log in with your credentials.");
       navigate("/"); // Redirect to login after successful signup
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
       } else {
         setError("An unexpected error occurred.");
       }
@@ -31,8 +32,10 @@ function SignUp() {
     <div className="relative min-h-screen bg-gray-100">
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
+      {/* Sign-up form container */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+          {/* Form header */}
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
             Create Account
           </h2>
@@ -44,7 +47,9 @@ function SignUp() {
             </div>
           )}
 
+          {/* Sign-up form */}
           <form onSubmit={signUp}>
+            {/* Username input field */}
             <div className="mb-3">
               <label htmlFor="username" className="block text-sm font-medium text-gray-600">
                 Username
@@ -60,7 +65,8 @@ function SignUp() {
                 required
               />
             </div>
-
+            
+            {/* Email input field */}
             <div className="mb-3">
               <label htmlFor="email" className="block text-sm font-medium text-gray-600">
                 Email
@@ -77,6 +83,7 @@ function SignUp() {
               />
             </div>
 
+            {/* Password input field */}
             <div className="mb-3">
               <label htmlFor="password" className="block text-sm font-medium text-gray-600">
                 Password
@@ -93,6 +100,7 @@ function SignUp() {
               />
             </div>
 
+            {/* Sign-up button */}
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -101,6 +109,7 @@ function SignUp() {
             </button>
           </form>
 
+          {/* Link to the login page */}
           <p className="text-center text-sm mt-4">
             Already have an account?{" "}
             <Link to="/" className="text-blue-500 hover:underline dark:text-purple-400">

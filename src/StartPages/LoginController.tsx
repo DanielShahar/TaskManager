@@ -14,7 +14,7 @@ class LoginController {
         password
       );
       const user = userCredential.user;
-      const token = await user.getIdToken(); // Get the JWT token
+      const token = await user.getIdToken(); // Get the JWT
 
       return {
         success: true,

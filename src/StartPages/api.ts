@@ -1,5 +1,3 @@
-// src/services/api.ts
-
 const API_BASE_URL = "http://localhost:5000"; // Replace with your Flask backend URL
 
 export const loginUser = async (email: string, password: string) => {
@@ -27,5 +25,3 @@ export const loginUser = async (email: string, password: string) => {
     }
   }
 };
-
-// Add other API functions here (signup, tasks, etc.)

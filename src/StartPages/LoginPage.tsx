@@ -7,13 +7,13 @@ interface LoginPageProps {
 }
 
 function LoginPage({ onLogin }: LoginPageProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState(""); // State to store email input
+  const [password, setPassword] = useState(""); // State to store password input
+  const navigate = useNavigate(); // Navigation function to redirect users
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission behavior
     setError(null); // Clear previous errors
 
     try {
@@ -21,16 +21,16 @@ function LoginPage({ onLogin }: LoginPageProps) {
 
       if (response.success) {
         localStorage.setItem("token", response.token); // Store JWT token
-        onLogin();
-        navigate("/dashboard"); // Redirect to dashboard
+        onLogin(); // Trigger the parent component's login callback
+        navigate("/dashboard"); // Redirect to the main application page
       } else {
-        setError(response.message || "Login failed"); // Display error message
+        setError(response.message || "Login failed"); // Show an error message if login fails
       }
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message || "An unexpected error occurred");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message || "Unexpected error occurred"); //Show an error message if there was an unexpected error
       } else {
-        setError("An unexpected error occurred");
+        setError("Unexpected error occurred"); //Show an error message if there was an unexpected error
       }
     }
   };
@@ -41,11 +41,14 @@ function LoginPage({ onLogin }: LoginPageProps) {
 
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+          {/* Page Title */}
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
             Login
           </h2>
           {error && <p className="text-red-500 mb-4">{error}</p>}
+          {/* Login Form */}
           <form onSubmit={handleLogin}>
+            {/* Email Input */}
             <div className="mb-3">
               <label
                 htmlFor="email"
@@ -64,7 +67,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
                 required
               />
             </div>
-
+            {/* Password Input */}
             <div className="mb-3">
               <label
                 htmlFor="password"
@@ -83,7 +86,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
                 required
               />
             </div>
-
+            {/* Login Button */}
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -91,6 +94,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
               Login
             </button>
           </form>
+          {/* Sign Up Link */}
           <p className="text-center text-sm mt-4">
             Don't have an account?{" "}
             <Link
