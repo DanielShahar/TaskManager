@@ -6,7 +6,6 @@ interface WelcomePageProps {
 
 interface Feature {
   title: string;
-  desc: string;
   tabId: string;
 }
 
@@ -14,12 +13,10 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ setActiveTab }) => {
   const features: Feature[] = [
     {
       title: "Smart Questions",
-      desc: "AI-powered questions tailored to your interview topics",
       tabId: "interview",
     },
     {
       title: "Easy Management",
-      desc: "Organize and track all your interviews effortlessly and get summaries of your interviews instantly using Word",
       tabId: "history",
     },
   ];
@@ -49,11 +46,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ setActiveTab }) => {
               <h3 className="text-lg sm:text-xl font-semibold text-purple-600 dark:text-purple-300 mb-3">
                 {feature.title}
               </h3>
-              
-              {/* Feature Description */}
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                {feature.desc}
-              </p>
+
             </div>
           ))}
         </div>
